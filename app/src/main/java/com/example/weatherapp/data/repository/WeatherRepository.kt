@@ -1,8 +1,11 @@
 package com.example.weatherapp.data.repository
 
 import com.example.weatherapp.data.datasource.WeatherRemoteDataSource
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class WeatherRepository (private val weatherRemoteDataSource: WeatherRemoteDataSource) {
+@Singleton
+class WeatherRepository @Inject constructor(private val remoteDataSource: WeatherRemoteDataSource) {
 
-    suspend fun fetchCityWeatherData() = weatherRemoteDataSource.fetchCityWeather()
+    suspend fun fetchCityWeatherData() = remoteDataSource.fetchCityWeather()
 }
