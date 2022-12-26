@@ -1,3 +1,5 @@
 package com.example.weatherapp.data.model.dto
 
-data class CoordinateDto(val lon: Double, val lat: Double)
+import java.io.Serializable
+
+data class CoordinateDto(val lon: Double, val lat: Double): Serializable

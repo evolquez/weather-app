@@ -1,5 +1,8 @@
 package com.example.weatherapp.data.model.dto
 
+import com.google.gson.annotations.SerializedName
+import java.io.Serializable
+
 data class CityWeatherDto(
     val id: Int,
     val name: String,
@@ -7,5 +10,8 @@ data class CityWeatherDto(
     val sys: SysDto,
     val weather: List<WeatherConditionDto>,
     val main: MainDto,
-    val dt: Long
-)
+    val dt: Long,
+    val pop: Double,
+    @SerializedName("dt_txt")
+    val dtTxt: String
+): Serializable

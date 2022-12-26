@@ -1,7 +1,7 @@
 package com.example.weatherapp.di
 
 import android.content.Context
-import com.example.weatherapp.ui.forecast.main.MainAdapter
+import com.example.weatherapp.ui.forecast.forecast.di.FiveDayForecastComponent
 import com.example.weatherapp.ui.forecast.main.di.MainComponent
 import dagger.BindsInstance
 import dagger.Component
@@ -20,4 +20,5 @@ interface AppComponent {
     }
 
     fun mainComponent(): MainComponent.Factory
+    fun fiveDayForecastComponent(): FiveDayForecastComponent.Factory
 }

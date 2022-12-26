@@ -2,7 +2,8 @@
     <string name="app_name">Weather App</string>
     <string name="city_name_format">%s, %s</string>
     <string name="temperature">%d°C</string>
-    <string name="temperature_higher">H: %d°</string>
-    <string name="temperature_lower">L: %d°</string>
-    <string name="precipitation_percent">Precipitation: %s</string>
+    <string name="temperature_higher">Max: %d°</string>
+    <string name="temperature_lower">Min: %d°</string>
+    <string name="precipitation_percent">Precipitation: %s%%</string>
+    <string name="five_day_forecast">5 Day Weather Forecast</string>
 </resources>

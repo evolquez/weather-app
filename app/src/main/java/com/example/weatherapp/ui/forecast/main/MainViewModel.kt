@@ -18,7 +18,9 @@ class MainViewModel @Inject constructor(private val repository: WeatherRepositor
     fun getWeatherData() {
         viewModelScope.launch(Dispatchers.IO) {
             val result  = repository.fetchCityWeatherData()
-            weatherList.postValue(result.body()?.list)
+            result.body()?.let {
+                weatherList.postValue(it.list)
+            }
         }
     }
 

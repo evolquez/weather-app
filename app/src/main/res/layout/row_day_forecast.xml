@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingHorizontal="16dp">
+
+    <TextView
+        android:id="@+id/text_view_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        tools:text="Mon 26, Dec" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="3dp"
+        android:gravity="center_vertical"
+        android:layout_below="@id/text_view_date">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/image_view_weather"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginEnd="5dp"
+            tools:srcCompat="@drawable/w10d" />
+
+        <TextView
+            android:id="@+id/text_view_max_temp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/image_view_weather"
+            tools:text="30°" />
+
+        <TextView
+            android:id="@+id/text_view_min_temp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            app:layout_constraintStart_toEndOf="@+id/image_view_weather"
+            tools:text="/22°" />
+
+        <TextView
+            android:id="@+id/text_view_precipitation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:text="Precipitation: 40%"
+            android:textAlignment="center"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"/>
+    </LinearLayout>
+</RelativeLayout>

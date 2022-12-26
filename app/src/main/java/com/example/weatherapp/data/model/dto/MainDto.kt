@@ -1,6 +1,7 @@
 package com.example.weatherapp.data.model.dto
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class MainDto(
     val temp: Double,
@@ -12,4 +13,4 @@ data class MainDto(
     val tempMax: Double,
     val pressure: Int,
     val humidity: Int
-)
+): Serializable
