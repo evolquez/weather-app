@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weatherapp.R
-import com.example.weatherapp.data.model.dto.CityWeatherDto
+import com.example.weatherapp.data.model.dto.ForecastDto
 import com.example.weatherapp.databinding.RowDayForecastBinding
 import com.example.weatherapp.util.Util
 import com.squareup.picasso.Picasso
@@ -19,7 +19,7 @@ class FiveDayForecastAdapter(private val activity: FiveDayForecastActivity): Rec
         activity.component.inject(this)
     }
 
-    var items: List<CityWeatherDto> = emptyList()
+    var items: List<ForecastDto> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val context = parent.context
@@ -45,10 +45,10 @@ class FiveDayForecastAdapter(private val activity: FiveDayForecastActivity): Rec
         private val picasso: Picasso
     ): RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: CityWeatherDto) {
+        fun bind(item: ForecastDto) {
 
             with(binding) {
-                textViewDate.text = item.dtTxt.split(" ")[0]
+                textViewDate.text = item.dtTxt?.split(" ")?.get(0) ?: ""
                 textViewMaxTemp.text = activity.getString(R.string.temperature, item.main.tempMax.toInt())
                 val min = activity.getString(R.string.temperature, item.main.tempMin.toInt())
                 textViewMinTemp.text = " / ${min}"

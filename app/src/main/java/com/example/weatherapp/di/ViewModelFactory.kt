@@ -23,9 +23,7 @@ class ViewModelFactory @Inject constructor(
 abstract class ViewModelBuilderModule {
 
     @Binds
-    abstract fun bindViewModelFactory(
-        factory: ViewModelFactory
-    ): ViewModelProvider.Factory
+    abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
 }
 
 @Target(

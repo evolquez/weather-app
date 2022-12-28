@@ -1,22 +1,21 @@
 package com.example.weatherapp.data.datasource
 
-import com.example.weatherapp.data.model.dto.CityWeatherResultDto
-import com.example.weatherapp.data.model.dto.CoordinateDto
+import com.example.weatherapp.data.model.dto.ForecastResultDto
 import com.example.weatherapp.data.network.WeatherService
 import retrofit2.Response
 import javax.inject.Inject
 
 class WeatherRemoteDataSource @Inject constructor(private val weatherService: WeatherService){
 
-    suspend fun fetchCityWeather(): Response<CityWeatherResultDto> {
-        return weatherService.getCityWeather(ids = CITY_IDS,  appId = APP_ID)
+    suspend fun fetchWeather(): Response<ForecastResultDto> {
+        return weatherService.fetchWeatherByCities(ids = CITY_IDS,  appId = APP_ID)
     }
 
-    suspend fun fetchFiveDayWeatherForecast(cityCoordinate: CoordinateDto): Response<CityWeatherResultDto> {
+    suspend fun fetchFiveDayWeatherForecast(latitude: Double, longitude: Double): Response<ForecastResultDto> {
         return weatherService.getFiveDayWeatherForecast(
             appId = APP_ID,
-            lat = cityCoordinate.lat,
-            lon = cityCoordinate.lon
+            lat = latitude,
+            lon = longitude
         )
     }
 

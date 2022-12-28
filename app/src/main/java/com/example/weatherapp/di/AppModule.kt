@@ -1,5 +1,9 @@
 package com.example.weatherapp.di
 
+import android.content.Context
+import androidx.room.Room
+import com.example.weatherapp.data.model.dao.WeatherDao
+import com.example.weatherapp.data.model.database.WeatherDatabase
 import com.example.weatherapp.data.network.WeatherService
 import com.squareup.picasso.Picasso
 import dagger.Module
@@ -20,6 +24,17 @@ class AppModule {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(WeatherService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun weatherDao(applicationContext: Context): WeatherDao {
+        return Room
+            .databaseBuilder(
+                applicationContext,
+                WeatherDatabase::class.java,
+                "weather-database"
+            ).build().weatherDao()
     }
 
     @Singleton

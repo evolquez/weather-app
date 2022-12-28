@@ -7,11 +7,11 @@ import androidx.activity.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherapp.R
-import com.example.weatherapp.data.model.dto.CityWeatherDto
+import com.example.weatherapp.data.model.entity.Weather
 import com.example.weatherapp.databinding.ActivityFiveDayForecastBinding
 import com.example.weatherapp.ui.forecast.forecast.di.FiveDayForecastComponent
 import com.example.weatherapp.util.Util.getSerializable
-import com.example.weatherapp.util.WeatherApplication
+import com.example.weatherapp.WeatherApplication
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import javax.inject.Inject
 
@@ -25,7 +25,7 @@ class FiveDayForecastActivity : AppCompatActivity(), View {
     private val viewModel by viewModels<FiveDayForecastViewModel> { viewModelFactory }
 
     private lateinit var binding: ActivityFiveDayForecastBinding
-    private var cityWeather: CityWeatherDto? = null
+    private var weather: Weather? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -40,10 +40,10 @@ class FiveDayForecastActivity : AppCompatActivity(), View {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        cityWeather = intent.getSerializable(CITY_WEATHER_PARAM, CityWeatherDto::class.java)
+        weather = intent.getSerializable(WEATHER_PARAM, Weather::class.java)
 
-        cityWeather?.let {
-            viewModel.cityWeather.value = it
+        weather?.let {
+            viewModel.weather.value = it
             initialize()
         }
     }
@@ -56,12 +56,11 @@ class FiveDayForecastActivity : AppCompatActivity(), View {
     @SuppressLint("NotifyDataSetChanged")
     override fun initialize() {
         val forecastAdapter = FiveDayForecastAdapter(this)
-        val cityWeather = viewModel.cityWeather.value
 
-        cityWeather?.let {
-            binding.textViewCityName.text = getString(R.string.city_name_format, it.name, it.sys.country)
+        viewModel.weather.value?.let {
+            binding.textViewCityName.text = getString(R.string.city_name_format, it.cityName, it.countryCode)
 
-            viewModel.getFiveDayWeatherForecast(cityWeather.coord)
+            viewModel.getFiveDayWeatherForecast(it.cityLat, it.cityLon)
         }
 
         with(binding.recyclerViewForecast) {
@@ -78,7 +77,7 @@ class FiveDayForecastActivity : AppCompatActivity(), View {
     }
 
     companion object {
-        const val CITY_WEATHER_PARAM = "city_weather_param"
+        const val WEATHER_PARAM = "weather_param"
     }
 }
 

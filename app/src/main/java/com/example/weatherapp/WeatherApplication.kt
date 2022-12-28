@@ -1,4 +1,4 @@
-package com.example.weatherapp.util
+package com.example.weatherapp
 
 import android.app.Application
 import com.example.weatherapp.di.AppComponent

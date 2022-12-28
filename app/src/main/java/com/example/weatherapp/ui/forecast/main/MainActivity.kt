@@ -7,11 +7,11 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.weatherapp.data.model.dto.CityWeatherDto
+import com.example.weatherapp.data.model.entity.Weather
 import com.example.weatherapp.databinding.ActivityMainBinding
 import com.example.weatherapp.ui.forecast.forecast.FiveDayForecastActivity
 import com.example.weatherapp.ui.forecast.main.di.MainComponent
-import com.example.weatherapp.util.WeatherApplication
+import com.example.weatherapp.WeatherApplication
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import javax.inject.Inject
 
@@ -65,15 +65,15 @@ class MainActivity : AppCompatActivity(), View {
         }
     }
 
-    override fun start5DaysForecast(cityWeather: CityWeatherDto) {
+    override fun start5DaysForecast(weather: Weather) {
         startActivity(
             Intent(this, FiveDayForecastActivity::class.java)
-                .putExtra(FiveDayForecastActivity.CITY_WEATHER_PARAM, cityWeather)
+                .putExtra(FiveDayForecastActivity.WEATHER_PARAM, weather)
         )
     }
 }
 
 interface View {
     fun initialize()
-    fun start5DaysForecast(cityWeather: CityWeatherDto)
+    fun start5DaysForecast(weather: Weather)
 }

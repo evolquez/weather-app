@@ -4,7 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weatherapp.R
-import com.example.weatherapp.data.model.dto.CityWeatherDto
+import com.example.weatherapp.data.model.entity.ForecastInfo
+import com.example.weatherapp.data.model.entity.Weather
 import com.example.weatherapp.databinding.RowCityWeatherBinding
 import com.example.weatherapp.util.Util
 import com.squareup.picasso.Picasso
@@ -22,7 +23,7 @@ class MainAdapter(
         activity.component.inject(this)
     }
 
-    var items: List<CityWeatherDto> = emptyList()
+    var items: List<Weather> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val context = parent.context
@@ -45,33 +46,35 @@ class MainAdapter(
         private val picasso: Picasso
     ): RecyclerView.ViewHolder(binding.root) {
 
-        private var cityWeather: CityWeatherDto? = null
+        private var _weather: Weather? = null
 
         init {
             binding.root.setOnClickListener{
-                cityWeather?.let {
-                    activity.start5DaysForecast(it)
+                _weather?.let { w ->
+                    activity.start5DaysForecast(w)
                 }
             }
         }
 
-        fun bind(item: CityWeatherDto) {
+        fun bind(weather: Weather) {
 
-            cityWeather = item
+            _weather = weather
+
+            val foreCastInfo: ForecastInfo = weather.forecastInfo
 
             with(binding) {
-                textViewCity.text =  activity.getString(R.string.city_name_format, item.name, item.sys.country)
-                textViewTemperature.text = activity.getString(R.string.temperature, item.main.temp.toInt())
-                textViewHigh.text = activity.getString(R.string.temperature_higher, item.main.tempMax.toInt())
-                textViewLow.text = activity.getString(R.string.temperature_lower, item.main.tempMin.toInt())
+                textViewCity.text =  activity.getString(R.string.city_name_format, weather.cityName, weather.countryCode)
+                textViewTemperature.text = activity.getString(R.string.temperature, foreCastInfo.currentTemp.toInt())
+                textViewHigh.text = activity.getString(R.string.temperature_higher, foreCastInfo.maxTemp.toInt())
+                textViewLow.text = activity.getString(R.string.temperature_lower, foreCastInfo.minTemp.toInt())
 
                 //TODO Pending to calc or get precipitation (Missing from api endpoint)
                 textViewPrecipitation.text = activity.getString(R.string.precipitation_percent, "--")
 
-                val dateInMillis = (item.dt * 1000) + (item.sys.timezone * 1000)
+                val dateInMillis = (weather.date * 1000) + (weather.countryTimeZone * 1000)
                 textViewTimestamp.text = Date(dateInMillis).toString()
 
-                val imageUrl = String.format(Util.IMAGE_URL_FORMAT, item.weather[0].icon)
+                val imageUrl = String.format(Util.IMAGE_URL_FORMAT, foreCastInfo.weatherIcon)
                 picasso.load(imageUrl).into(imageViewWeather)
             }
         }

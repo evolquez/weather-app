@@ -3,24 +3,24 @@ package com.example.weatherapp.ui.forecast.forecast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.weatherapp.data.model.dto.CityWeatherDto
-import com.example.weatherapp.data.model.dto.CoordinateDto
+import com.example.weatherapp.data.model.dto.ForecastDto
+import com.example.weatherapp.data.model.entity.Weather
 import com.example.weatherapp.data.repository.WeatherRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class FiveDayForecastViewModel @Inject constructor(private val repository: WeatherRepository): ViewModel() {
 
-    val cityWeather: MutableLiveData<CityWeatherDto> by lazy {
-        MutableLiveData<CityWeatherDto>()
+    val weather: MutableLiveData<Weather> by lazy {
+        MutableLiveData<Weather>()
     }
 
-    val weatherList = MutableLiveData<List<CityWeatherDto>>()
+    val weatherList = MutableLiveData<List<ForecastDto>>()
 
 
-    fun getFiveDayWeatherForecast(cityCoordinate: CoordinateDto) {
+    fun getFiveDayWeatherForecast(lat: Double, lon: Double) {
         viewModelScope.launch {
-            val result = repository.fetchFiveDayWeatherForecast(cityCoordinate)
+            val result = repository.fetchFiveDayWeatherForecast(lat, lon)
 
             result.body()?.let {
                 weatherList.postValue(clearList(it.list))
@@ -34,11 +34,11 @@ class FiveDayForecastViewModel @Inject constructor(private val repository: Weath
      * @param list
      * @return ArrayList
      * */
-    private fun clearList(list: List<CityWeatherDto>): List<CityWeatherDto> {
-        val cityMap = mutableMapOf<String, CityWeatherDto>()
+    private fun clearList(list: List<ForecastDto>): List<ForecastDto> {
+        val cityMap = mutableMapOf<String, ForecastDto>()
 
         list.forEach{city ->
-            val date = city.dtTxt.split(" ")[0]
+            val date = city.dtTxt?.split(" ")?.get(0) ?: ""
             if(!cityMap.containsKey(date)){
                 cityMap[date] = city
             }

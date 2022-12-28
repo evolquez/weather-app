@@ -5,6 +5,7 @@ import android.os.Build
 import java.io.Serializable
 
 object Util {
+
     const val IMAGE_URL_FORMAT = "https://openweathermap.org/img/wn/%s@2x.png"
 
     @Suppress("DEPRECATION", "UNCHECKED_CAST")
