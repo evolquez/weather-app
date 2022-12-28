@@ -15,4 +15,4 @@ data class Weather(
     @ColumnInfo(name = "city_lon") val cityLon: Double,
     @Embedded val forecastInfo: ForecastInfo,
     val date: Long
-): java.io.Serializable
+): DbEntity(),  java.io.Serializable

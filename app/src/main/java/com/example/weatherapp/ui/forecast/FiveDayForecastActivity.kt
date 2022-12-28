@@ -60,7 +60,7 @@ class FiveDayForecastActivity : AppCompatActivity(), View {
         viewModel.weather.value?.let {
             binding.textViewCityName.text = getString(R.string.city_name_format, it.cityName, it.countryCode)
 
-            viewModel.getFiveDayWeatherForecast(it.cityLat, it.cityLon)
+            viewModel.getFiveDayWeatherForecast(it.id, it.cityLat, it.cityLon)
         }
 
         with(binding.recyclerViewForecast) {
@@ -70,7 +70,7 @@ class FiveDayForecastActivity : AppCompatActivity(), View {
             addItemDecoration(MaterialDividerItemDecoration(this@FiveDayForecastActivity, LinearLayoutManager.VERTICAL))
         }
 
-        viewModel.weatherList.observe(this) {list ->
+        viewModel.forecastList.observe(this) {list ->
             forecastAdapter.items = list
             forecastAdapter.notifyDataSetChanged()
         }

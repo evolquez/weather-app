@@ -21,10 +21,12 @@ interface WeatherDao {
     @Insert
     suspend fun updateForecast(forecast: List<Forecast>)
 
-
     @Query("DELETE FROM weather")
-    fun deleteAllWeather()
+    suspend fun deleteAllWeather()
 
     @Query("DELETE FROM forecast WHERE weather_id = :weatherId")
-    fun deleteAllForecast(weatherId: Int)
+    suspend fun deleteAllForecast(weatherId: Int)
+
+    @Query("DELETE FROM forecast")
+    suspend fun deleteAllForecast()
 }

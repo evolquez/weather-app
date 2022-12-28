@@ -7,10 +7,10 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "forecast")
 data class Forecast(
-    @PrimaryKey(autoGenerate = true) val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo(name = "weather_id") val weatherId: Int,
     @Embedded val forecastInfo: ForecastInfo,
-)
+): DbEntity()
 
 data class ForecastInfo(
     @ColumnInfo(name ="current_temp") val currentTemp: Double,

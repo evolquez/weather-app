@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weatherapp.R
-import com.example.weatherapp.data.model.dto.ForecastDto
+import com.example.weatherapp.data.model.entity.Forecast
 import com.example.weatherapp.databinding.RowDayForecastBinding
 import com.example.weatherapp.util.Util
 import com.squareup.picasso.Picasso
@@ -19,7 +19,7 @@ class FiveDayForecastAdapter(private val activity: FiveDayForecastActivity): Rec
         activity.component.inject(this)
     }
 
-    var items: List<ForecastDto> = emptyList()
+    var items: List<Forecast> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val context = parent.context
@@ -45,17 +45,18 @@ class FiveDayForecastAdapter(private val activity: FiveDayForecastActivity): Rec
         private val picasso: Picasso
     ): RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: ForecastDto) {
+        fun bind(item: Forecast) {
+            val forecastInfo = item.forecastInfo
 
             with(binding) {
-                textViewDate.text = item.dtTxt?.split(" ")?.get(0) ?: ""
-                textViewMaxTemp.text = activity.getString(R.string.temperature, item.main.tempMax.toInt())
-                val min = activity.getString(R.string.temperature, item.main.tempMin.toInt())
+                textViewDate.text = forecastInfo.dateText?.split(" ")?.get(0) ?: ""
+                textViewMaxTemp.text = activity.getString(R.string.temperature, forecastInfo.maxTemp.toInt())
+                val min = activity.getString(R.string.temperature, forecastInfo.minTemp.toInt())
                 textViewMinTemp.text = " / ${min}"
-                val precipitation = (item.pop * 100).toInt()
+                val precipitation = (forecastInfo.precipitation * 100).toInt()
                 textViewPrecipitation.text = activity.getString(R.string.precipitation_percent, precipitation.toString())
 
-                val imageUrl = String.format(Util.IMAGE_URL_FORMAT, item.weather[0].icon)
+                val imageUrl = String.format(Util.IMAGE_URL_FORMAT, forecastInfo.weatherIcon)
                 picasso.load(imageUrl).into(imageViewWeather)
             }
         }
