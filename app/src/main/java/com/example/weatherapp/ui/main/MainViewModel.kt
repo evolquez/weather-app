@@ -1,4 +1,4 @@
-package com.example.weatherapp.ui.forecast.main
+package com.example.weatherapp.ui.main
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

@@ -1,8 +1,8 @@
 package com.example.weatherapp.di
 
 import android.content.Context
-import com.example.weatherapp.ui.forecast.forecast.di.FiveDayForecastComponent
-import com.example.weatherapp.ui.forecast.main.di.MainComponent
+import com.example.weatherapp.ui.forecast.di.FiveDayForecastComponent
+import com.example.weatherapp.ui.main.di.MainComponent
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton

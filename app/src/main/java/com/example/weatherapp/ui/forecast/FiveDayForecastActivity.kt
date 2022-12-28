@@ -1,4 +1,4 @@
-package com.example.weatherapp.ui.forecast.forecast
+package com.example.weatherapp.ui.forecast
 
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherapp.R
 import com.example.weatherapp.data.model.entity.Weather
 import com.example.weatherapp.databinding.ActivityFiveDayForecastBinding
-import com.example.weatherapp.ui.forecast.forecast.di.FiveDayForecastComponent
+import com.example.weatherapp.ui.forecast.di.FiveDayForecastComponent
 import com.example.weatherapp.util.Util.getSerializable
 import com.example.weatherapp.WeatherApplication
 import com.google.android.material.divider.MaterialDividerItemDecoration

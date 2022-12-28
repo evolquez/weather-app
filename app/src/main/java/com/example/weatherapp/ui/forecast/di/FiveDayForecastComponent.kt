@@ -1,8 +1,8 @@
-package com.example.weatherapp.ui.forecast.forecast.di
+package com.example.weatherapp.ui.forecast.di
 
 import com.example.weatherapp.di.ActivityScope
-import com.example.weatherapp.ui.forecast.forecast.FiveDayForecastActivity
-import com.example.weatherapp.ui.forecast.forecast.FiveDayForecastAdapter
+import com.example.weatherapp.ui.forecast.FiveDayForecastActivity
+import com.example.weatherapp.ui.forecast.FiveDayForecastAdapter
 import dagger.Subcomponent
 
 @ActivityScope

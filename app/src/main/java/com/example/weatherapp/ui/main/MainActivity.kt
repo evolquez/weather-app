@@ -1,4 +1,4 @@
-package com.example.weatherapp.ui.forecast.main
+package com.example.weatherapp.ui.main
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -9,8 +9,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherapp.data.model.entity.Weather
 import com.example.weatherapp.databinding.ActivityMainBinding
-import com.example.weatherapp.ui.forecast.forecast.FiveDayForecastActivity
-import com.example.weatherapp.ui.forecast.main.di.MainComponent
+import com.example.weatherapp.ui.forecast.FiveDayForecastActivity
+import com.example.weatherapp.ui.main.di.MainComponent
 import com.example.weatherapp.WeatherApplication
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import javax.inject.Inject

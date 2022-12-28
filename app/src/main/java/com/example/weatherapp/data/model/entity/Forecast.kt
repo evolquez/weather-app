@@ -19,4 +19,4 @@ data class ForecastInfo(
     @ColumnInfo(name = "weather_icon") val weatherIcon: String,
     @ColumnInfo(name = "date_text") val dateText: String?,
     val precipitation: Double
-)
+): java.io.Serializable
