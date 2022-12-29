@@ -3,14 +3,20 @@ package com.example.weatherapp.ui.forecast
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.weatherapp.R
-import com.example.weatherapp.data.model.entity.Forecast
+import androidx.viewbinding.ViewBinding
 import com.example.weatherapp.databinding.RowDayForecastBinding
-import com.example.weatherapp.util.Util
+import com.example.weatherapp.databinding.RowEmptyItemBinding
+import com.example.weatherapp.databinding.RowLoaderItemBinding
+import com.example.weatherapp.ui.common.holder.item.BaseItem
+import com.example.weatherapp.ui.common.holder.item.ItemType
+import com.example.weatherapp.ui.common.holder.viewholder.BaseViewHolder
+import com.example.weatherapp.ui.common.holder.viewholder.EmptyViewHolder
+import com.example.weatherapp.ui.common.holder.viewholder.ForecastViewHolder
+import com.example.weatherapp.ui.common.holder.viewholder.LoaderViewHolder
 import com.squareup.picasso.Picasso
 import javax.inject.Inject
 
-class FiveDayForecastAdapter(private val activity: FiveDayForecastActivity): RecyclerView.Adapter<FiveDayForecastAdapter.ViewHolder>() {
+class FiveDayForecastAdapter(private val activity: FiveDayForecastActivity): RecyclerView.Adapter<BaseViewHolder<in BaseItem, in ViewBinding>>() {
 
     @Inject
     lateinit var picasso: Picasso
@@ -19,46 +25,31 @@ class FiveDayForecastAdapter(private val activity: FiveDayForecastActivity): Rec
         activity.component.inject(this)
     }
 
-    var items: List<Forecast> = emptyList()
+    var items: List<BaseItem> = emptyList()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val context = parent.context
-        return ViewHolder(
-            RowDayForecastBinding.inflate(
-                LayoutInflater.from(context),
-                parent,
-                false
-            ),
-            activity, picasso
-        )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<in BaseItem, in ViewBinding> {
+
+        val inflater = LayoutInflater.from(parent.context)
+
+        @Suppress("UNCHECKED_CAST")
+        return when(ItemType.fromValue(viewType)) {
+            ItemType.Forecast -> ForecastViewHolder(RowDayForecastBinding.inflate(inflater, parent, false), activity, picasso)
+            ItemType.Loader -> LoaderViewHolder(RowLoaderItemBinding.inflate(inflater, parent, false))
+            ItemType.Empty -> EmptyViewHolder(RowEmptyItemBinding.inflate(inflater, parent, false))
+            else -> throw IllegalArgumentException("Unknown viewType")
+        } as BaseViewHolder<in BaseItem, in ViewBinding>
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun getItemViewType(position: Int) = items[position].itemType.value
+
+    override fun onBindViewHolder(
+        holder: BaseViewHolder<in BaseItem, in ViewBinding>,
+        position: Int
+    ) {
         holder.bind(items[position])
     }
 
     override fun getItemCount() = items.size
 
-    class ViewHolder(
-        private val binding: RowDayForecastBinding,
-        private val activity: FiveDayForecastActivity,
-        private val picasso: Picasso
-    ): RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Forecast) {
-            val forecastInfo = item.forecastInfo
-
-            with(binding) {
-                textViewDate.text = forecastInfo.dateText?.split(" ")?.get(0) ?: ""
-                textViewMaxTemp.text = activity.getString(R.string.temperature, forecastInfo.maxTemp.toInt())
-                val min = activity.getString(R.string.temperature, forecastInfo.minTemp.toInt())
-                textViewMinTemp.text = " / ${min}"
-                val precipitation = (forecastInfo.precipitation * 100).toInt()
-                textViewPrecipitation.text = activity.getString(R.string.precipitation_percent, precipitation.toString())
-
-                val imageUrl = String.format(Util.IMAGE_URL_FORMAT, forecastInfo.weatherIcon)
-                picasso.load(imageUrl).into(imageViewWeather)
-            }
-        }
-    }
 }

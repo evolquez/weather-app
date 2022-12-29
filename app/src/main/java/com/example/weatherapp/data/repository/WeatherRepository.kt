@@ -1,10 +1,12 @@
 package com.example.weatherapp.data.repository
 
+import android.util.Log
 import com.example.weatherapp.data.datasource.WeatherLocalDataSource
 import com.example.weatherapp.data.datasource.WeatherRemoteDataSource
 import com.example.weatherapp.data.mapper.WeatherDataMapper
 import com.example.weatherapp.data.model.entity.Forecast
 import com.example.weatherapp.data.model.entity.Weather
+import java.net.UnknownHostException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -15,33 +17,39 @@ class WeatherRepository @Inject constructor(
 ) {
 
     suspend fun fetchWeather(): List<Weather> {
-        val localWeather = this.localDataSource.fetchWeatherByCities()
 
-        if(localWeather.isEmpty()){
+        try {
             val remoteWeather = this.remoteDataSource.fetchWeather()
             val weatherList: MutableList<Weather> = mutableListOf()
 
             remoteWeather.body()?.let { it ->
                 it.list.forEach { dto -> weatherList.add(WeatherDataMapper.toEntity(dto, Weather::class.java)) }
             }
-
+            this.localDataSource.deleteAllWeather()
             this.localDataSource.updateWeather(weatherList)
+
+        }catch(e: UnknownHostException) {
+            Log.d(TAG, "Could not fetch weather from remote")
+            Log.d(TAG, e.message.toString())
         }
+
         return localDataSource.fetchWeatherByCities()
     }
 
     suspend fun fetchFiveDayWeatherForecast(weatherId: Int, lat: Double, lon: Double): List<Forecast> {
-        //this.localDataSource.deleteAllForecast()
-        val localForecast = this.localDataSource.fetchForecastByWeather(weatherId)
 
-        if(localForecast.isEmpty()) {
+        try{
             val remoteForecast = remoteDataSource.fetchFiveDayWeatherForecast(lat, lon)
             val forecastList: MutableList<Forecast> = mutableListOf()
 
             remoteForecast.body()?.let {
                 it.list.forEach{ dto -> forecastList.add(WeatherDataMapper.toEntity(dto, Forecast::class.java, weatherId))}
             }
+            this.localDataSource.deleteAllForecast(weatherId)
             this.localDataSource.updateForeCastByWeather(clearFiveDayForecastList(forecastList))
+        }catch (e: UnknownHostException) {
+            Log.d(TAG, "Could not fetch forecast from remote")
+            Log.d(TAG, e.message.toString())
         }
 
         return localDataSource.fetchForecastByWeather(weatherId)
@@ -64,5 +72,9 @@ class WeatherRepository @Inject constructor(
         }
 
         return forecastMap.values.toList()
+    }
+
+    companion object {
+        private const val TAG = "WeatherRepository"
     }
 }

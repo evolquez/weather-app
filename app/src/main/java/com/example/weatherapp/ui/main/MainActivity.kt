@@ -1,17 +1,17 @@
 package com.example.weatherapp.ui.main
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.weatherapp.data.model.entity.Weather
 import com.example.weatherapp.databinding.ActivityMainBinding
 import com.example.weatherapp.ui.forecast.FiveDayForecastActivity
 import com.example.weatherapp.ui.main.di.MainComponent
 import com.example.weatherapp.WeatherApplication
+import com.example.weatherapp.data.model.dto.CityWeatherInfoDto
+import com.example.weatherapp.ui.common.holder.item.WeatherItem
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import javax.inject.Inject
 
@@ -40,7 +40,6 @@ class MainActivity : AppCompatActivity(), View {
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
-
         initialize()
     }
 
@@ -65,15 +64,22 @@ class MainActivity : AppCompatActivity(), View {
         }
     }
 
-    override fun start5DaysForecast(weather: Weather) {
+    override fun start5DaysForecast(weatherItem: WeatherItem) {
         startActivity(
-            Intent(this, FiveDayForecastActivity::class.java)
-                .putExtra(FiveDayForecastActivity.WEATHER_PARAM, weather)
+            FiveDayForecastActivity.createIntent(this,
+                CityWeatherInfoDto(
+                    cityId = weatherItem.cityId,
+                    cityName = weatherItem.city,
+                    country = weatherItem.countryCode,
+                    cityLat = weatherItem.cityLat,
+                    cityLon = weatherItem.cityLon
+                )
+            )
         )
     }
 }
 
 interface View {
     fun initialize()
-    fun start5DaysForecast(weather: Weather)
+    fun start5DaysForecast(weatherItem: WeatherItem)
 }

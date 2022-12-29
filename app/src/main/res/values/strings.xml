@@ -6,4 +6,5 @@
     <string name="temperature_lower">Min: %d°</string>
     <string name="precipitation_percent">Precipitation: %s%%</string>
     <string name="five_day_forecast">5 Day Weather Forecast</string>
+    <string name="no_information_found">NO INFORMATION FOUND</string>
 </resources>

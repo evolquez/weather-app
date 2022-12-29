@@ -3,18 +3,19 @@ package com.example.weatherapp.ui.main
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.weatherapp.R
-import com.example.weatherapp.data.model.entity.ForecastInfo
-import com.example.weatherapp.data.model.entity.Weather
+import androidx.viewbinding.ViewBinding
 import com.example.weatherapp.databinding.RowCityWeatherBinding
-import com.example.weatherapp.util.Util
+import com.example.weatherapp.databinding.RowEmptyItemBinding
+import com.example.weatherapp.databinding.RowLoaderItemBinding
+import com.example.weatherapp.ui.common.holder.item.BaseItem
+import com.example.weatherapp.ui.common.holder.item.ItemType
+import com.example.weatherapp.ui.common.holder.viewholder.*
 import com.squareup.picasso.Picasso
-import java.util.Date
 import javax.inject.Inject
 
 class MainAdapter(
     private val activity: MainActivity
-): RecyclerView.Adapter<MainAdapter.ViewHolder>() {
+): RecyclerView.Adapter<BaseViewHolder<in BaseItem, in ViewBinding>>() {
 
     @Inject
     lateinit var picasso: Picasso
@@ -23,60 +24,31 @@ class MainAdapter(
         activity.component.inject(this)
     }
 
-    var items: List<Weather> = emptyList()
+    var items: List<BaseItem> = emptyList()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val context = parent.context
-        return ViewHolder(
-            RowCityWeatherBinding.inflate(LayoutInflater.from(context),
-                parent,
-                false),
-            activity , picasso)
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): BaseViewHolder<in BaseItem, in ViewBinding> {
+        val inflater = LayoutInflater.from(parent.context)
+
+        @Suppress("UNCHECKED_CAST")
+        return when(ItemType.fromValue(viewType)) {
+            ItemType.Weather -> WeatherViewHolder(RowCityWeatherBinding.inflate(inflater, parent, false), activity, picasso)
+            ItemType.Loader -> LoaderViewHolder(RowLoaderItemBinding.inflate(inflater, parent, false))
+            ItemType.Empty -> EmptyViewHolder(RowEmptyItemBinding.inflate(inflater, parent, false))
+            else -> throw IllegalArgumentException("Unknown viewType")
+        } as BaseViewHolder<in BaseItem, in ViewBinding>
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: BaseViewHolder<in BaseItem, in ViewBinding>,
+        position: Int
+    ) {
         holder.bind(items[position])
     }
 
+    override fun getItemViewType(position: Int) = items[position].itemType.value
+
     override fun getItemCount() = items.size
-
-    class ViewHolder(
-        private val binding: RowCityWeatherBinding,
-        private val activity: MainActivity,
-        private val picasso: Picasso
-    ): RecyclerView.ViewHolder(binding.root) {
-
-        private var _weather: Weather? = null
-
-        init {
-            binding.root.setOnClickListener{
-                _weather?.let { w ->
-                    activity.start5DaysForecast(w)
-                }
-            }
-        }
-
-        fun bind(weather: Weather) {
-
-            _weather = weather
-
-            val foreCastInfo: ForecastInfo = weather.forecastInfo
-
-            with(binding) {
-                textViewCity.text =  activity.getString(R.string.city_name_format, weather.cityName, weather.countryCode)
-                textViewTemperature.text = activity.getString(R.string.temperature, foreCastInfo.currentTemp.toInt())
-                textViewHigh.text = activity.getString(R.string.temperature_higher, foreCastInfo.maxTemp.toInt())
-                textViewLow.text = activity.getString(R.string.temperature_lower, foreCastInfo.minTemp.toInt())
-
-                //TODO Pending to calc or get precipitation (Missing from api endpoint)
-                textViewPrecipitation.text = activity.getString(R.string.precipitation_percent, "--")
-
-                val dateInMillis = (weather.date * 1000) + (weather.countryTimeZone * 1000)
-                textViewTimestamp.text = Date(dateInMillis).toString()
-
-                val imageUrl = String.format(Util.IMAGE_URL_FORMAT, foreCastInfo.weatherIcon)
-                picasso.load(imageUrl).into(imageViewWeather)
-            }
-        }
-    }
 }

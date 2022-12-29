@@ -18,6 +18,7 @@
         tools:text="Mon 26, Dec" />
 
     <LinearLayout
+        android:id="@+id/layout_forecast"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
