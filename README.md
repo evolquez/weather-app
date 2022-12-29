@@ -34,5 +34,12 @@ When selecting a city from the current conditions list the app navigate to a new
 - Dependency Injection with Dagger2
 - Unit testing
 
+## Screenshots
+<img src="https://user-images.githubusercontent.com/8124733/209906215-458f0f18-8c6f-4cca-8edd-c14f1af5e8c5.png" width="350"/>
+
+<img src="https://user-images.githubusercontent.com/8124733/209906223-163bc0b3-50f4-435e-917d-2d0960aaa49a.png" width="350"/>
+
+https://user-images.githubusercontent.com/8124733/209906877-5ccac667-d9c3-4c74-b594-0fae9cb2d0d6.mov
+
 
 [OpenWeather Api]: <https://openweathermap.org/api>
