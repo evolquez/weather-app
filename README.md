@@ -1,6 +1,6 @@
 # Weather App
 
-## Current conditions 
+## Current Conditions 
 
 This simple weather Android app displays a list of current weather conditions for each state capital.
 
@@ -23,7 +23,7 @@ When selecting a city from the current conditions list the app navigate to a new
 - Target API 33
 - Min API 23
 
-## Implementations
+## Libraries and Dependencies
 - Room database.
 - Retrofit.
 - Jetpack (Androidx libraries Lifecycle)
